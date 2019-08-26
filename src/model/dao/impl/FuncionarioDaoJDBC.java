@@ -52,17 +52,8 @@ public class FuncionarioDaoJDBC implements FuncionarioDao {
 		st.setInt(1, id);
 		rs = st.executeQuery();
 		if(rs.next()) {
-			Cliente cli = new Cliente();
-			cli.setId(rs.getInt("ClienteId"));
-			cli.setEmpresa(rs.getString("EmpNome"));
-			cli.setProjeto(rs.getString("ProjNome"));
-			Funcionario obj = new Funcionario();
-			obj.setId(rs.getInt("Id"));
-			obj.setNome(rs.getString("Nome"));
-			obj.setEmail(rs.getString("Email"));
-			obj.setInicio(rs.getDate("Inicio"));
-			obj.setSalario(rs.getDouble("Salario"));
-			obj.setCliente(cli);
+			Cliente cli = instantiateCliente(rs);
+			Funcionario obj = instantiateFuncionario(rs, cli);
 			return obj;
 		}
 		return null;
@@ -75,6 +66,25 @@ public class FuncionarioDaoJDBC implements FuncionarioDao {
 			DB.closeResultSet(rs);
 		}
 		
+	}
+
+	private Funcionario instantiateFuncionario(ResultSet rs, Cliente cli) throws SQLException {
+		Funcionario obj = new Funcionario();
+		obj.setId(rs.getInt("Id"));
+		obj.setNome(rs.getString("Nome"));
+		obj.setEmail(rs.getString("Email"));
+		obj.setInicio(rs.getDate("Inicio"));
+		obj.setSalario(rs.getDouble("Salario"));
+		obj.setCliente(cli);
+		return obj;
+	}
+
+	private Cliente instantiateCliente(ResultSet rs) throws SQLException {
+		Cliente cli = new Cliente();
+		cli.setId(rs.getInt("ClienteId"));
+		cli.setEmpresa(rs.getString("EmpNome"));
+		cli.setProjeto(rs.getString("ProjNome"));
+		return cli;
 	}
 
 	@Override

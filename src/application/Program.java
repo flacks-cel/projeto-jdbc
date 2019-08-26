@@ -10,7 +10,8 @@ public class Program {
 		
 		FuncionarioDao funcionarioDao = DaoFactory.criaFuncionarioDao();
 		
-		Funcionario funcionario = funcionarioDao.findById(1);
+		System.out.println("=== Teste 1 : Funcionario findById ===");
+		Funcionario funcionario = funcionarioDao.findById(2);
 		System.out.println(funcionario);
 
 	}

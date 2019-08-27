@@ -35,5 +35,11 @@ public class Program {
 		Funcionario funcNovo = new Funcionario(null, "Armani", "armani@gmail.com", new Date(), 1000.0, cliente);
 		funcionarioDao.insert(funcNovo);
 		System.out.println("Inseriu novo id = " + funcNovo.getId());
+		
+		System.out.println("\n=== Teste 5 : Funcionario update ===");
+		funcionario = funcionarioDao.findById(1);
+		funcionario.setNome("Bruna");
+		funcionarioDao.update(funcionario);
+		System.out.println("Feito update! ");
 	}
 }

@@ -101,6 +101,8 @@ public class FuncionarioDaoJDBC implements FuncionarioDao {
 			st.setInt(1, id);
 			
 			st.executeUpdate();
+			
+			
 		}
 		catch (SQLException e) {
 			throw new DbException(e.getMessage());

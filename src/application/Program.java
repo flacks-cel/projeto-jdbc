@@ -23,6 +23,13 @@ public class Program {
 		for (Funcionario obj : list) {
 			System.out.println(obj);
 		}
-
+		
+		System.out.println("\n=== Teste 3 : Funcionario findAll ===");
+		cliente = new Cliente(2, null, null);
+		list = funcionarioDao.findAll();
+		for (Funcionario obj : list) {
+			System.out.println(obj);
+		}
+		
 	}
 }

@@ -4,7 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import db.DB;
 import db.DbException;
@@ -44,7 +47,7 @@ public class FuncionarioDaoJDBC implements FuncionarioDao {
 		ResultSet rs = null;
 		try {
 		st = conn.prepareStatement(
-				"SELECT funcionario.*,Empresa as EmpNome,Projeto as ProjNome "
+				"SELECT funcionario.*,Empresa as EmpNome,Projeto as EmpProj "
 				+ "FROM funcionario INNER JOIN cliente "
 				+ "ON funcionario.ClienteId = cliente.Id "
 				+ "WHERE funcionario.Id = ?");
@@ -83,7 +86,7 @@ public class FuncionarioDaoJDBC implements FuncionarioDao {
 		Cliente cli = new Cliente();
 		cli.setId(rs.getInt("ClienteId"));
 		cli.setEmpresa(rs.getString("EmpNome"));
-		cli.setProjeto(rs.getString("ProjNome"));
+		cli.setProjeto(rs.getString("EmpProj"));
 		return cli;
 	}
 
@@ -91,5 +94,48 @@ public class FuncionarioDaoJDBC implements FuncionarioDao {
 	public List<Funcionario> findAll() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+		public List<Funcionario> findByCliente(Cliente cliente) {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		try {
+		st = conn.prepareStatement(
+				"SELECT funcionario.*,cliente.Empresa as EmpNome, cliente.Projeto as EmpProj "
+				+ "FROM funcionario INNER JOIN cliente "
+				+ "ON funcionario.ClienteId = cliente.Id "
+				+ "WHERE ClienteId = ? "
+				+ "ORDER BY Empresa");
+		
+		st.setInt(1, cliente.getId());
+		
+		rs = st.executeQuery();
+		
+		List<Funcionario> list = new ArrayList<>();
+		Map<Integer, Cliente> map = new HashMap<>();
+		
+		while(rs.next()) {
+			
+			Cliente cli = map.get(rs.getInt("ClienteId"));
+			
+			if(cli == null) {
+				cli = instantiateCliente(rs);
+				map.put(rs.getInt("ClienteId"), cli);
+			}
+			
+			Funcionario obj = instantiateFuncionario(rs, cli);
+			list.add(obj);
+		}
+		return list;
+		}
+		catch(SQLException e){
+			throw new DbException(e.getMessage());
+		}
+		finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
+		
 	}
 }

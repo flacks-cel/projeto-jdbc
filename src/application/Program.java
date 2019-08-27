@@ -2,6 +2,7 @@ package application;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Scanner;
 
 import model.dao.DaoFactory;
 import model.dao.FuncionarioDao;
@@ -11,6 +12,8 @@ import model.entities.Funcionario;
 public class Program {
 
 	public static void main(String[] args) {
+		
+		Scanner sc = new Scanner(System.in);
 		
 		FuncionarioDao funcionarioDao = DaoFactory.criaFuncionarioDao();
 		
@@ -40,6 +43,14 @@ public class Program {
 		funcionario = funcionarioDao.findById(1);
 		funcionario.setNome("Bruna");
 		funcionarioDao.update(funcionario);
-		System.out.println("Feito update! ");
+		System.out.println("Atualizado ! ");
+		
+		System.out.println("\n=== Teste 6 : Funcionario delete ===");
+		System.out.println("Digite um Id para deletar : ");
+		int id = sc.nextInt();
+		funcionarioDao.deleteById(id);
+		System.out.println("Deletado com sucesso !");
+	
+	sc.close();
 	}
 }

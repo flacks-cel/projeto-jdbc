@@ -1,5 +1,6 @@
 package application;
 
+import java.util.Date;
 import java.util.List;
 
 import model.dao.DaoFactory;
@@ -30,6 +31,9 @@ public class Program {
 		for (Funcionario obj : list) {
 			System.out.println(obj);
 		}
-		
+		System.out.println("\n=== Teste 4 : Funcionario Insert ===");
+		Funcionario funcNovo = new Funcionario(null, "Armani", "armani@gmail.com", new Date(), 1000.0, cliente);
+		funcionarioDao.insert(funcNovo);
+		System.out.println("Inseriu novo id = " + funcNovo.getId());
 	}
 }
